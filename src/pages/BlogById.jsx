@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { db } from '../config/firebase';
-import {getDoc,doc}  from 'firebase/firestore';
+import {getDoc,doc,deleteDoc}  from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 const BlogById = () => {
     const {id} =useParams();
@@ -26,7 +26,17 @@ const BlogById = () => {
 useEffect(()=>{
 fetchBlog()
     },[])
-    console.log(blog,'fnfnnfnf')
+
+const handleDelete=async()=>{
+try {
+const docRef=await doc(db,'blogs',id);
+const deleteSnap=await deleteDoc(docRef)
+} catch (error) {
+  console.log(error,'err')
+}
+}
+
+
   return (
     <div className="max-w-2xl mx-auto p-4">
     <h1 className="text-3xl font-bold mb-4">{blog?.title}</h1>

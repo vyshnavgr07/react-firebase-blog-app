@@ -10,9 +10,15 @@ const Registration = () => {
 
     const signInWithGoogle=async()=>{
         try {
-        const user=await signInWithPopup(auth,googleProvider)
-        console.log(user,"userrr") 
-        setUser(user)
+        const fireuser=await signInWithPopup(auth,googleProvider)
+        console.log(fireuser,"userrr") 
+        const obj={
+          userId:fireuser.user.uid,
+          name:fireuser.user.displayName,
+          email:fireuser.user.email}
+            
+          localStorage.setItem('user',JSON.stringify(obj))
+          setUser(obj)
         navigate('/')
         } catch (error) {
             console.log(error,"err")

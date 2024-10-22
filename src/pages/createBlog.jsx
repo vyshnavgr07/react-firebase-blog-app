@@ -3,10 +3,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { db } from '../config/firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import useAuthStore from '../zustand/authenticatedUser';
 
 const CreateBlog = () => {
-  const moviesCollectionRef = collection(db, "blogs");
-  
+  const blogsCollectionRef = collection(db, "blogs");
+  const user = useAuthStore((state) => state.user);
   const {
     register,
     handleSubmit,
@@ -15,9 +16,18 @@ const CreateBlog = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (!user) {
+      alert("You need to be logged in to create a blog post.");
+      return;
+    }
     try {
-      console.log(data,"datumm")
-     const response= await addDoc(moviesCollectionRef, data);
+      const newData={...data,
+        autherId:user.userId,
+        authorName: user.name||"Anonymous", 
+        createdAt: new Date()}
+
+      console.log(newData,"datumm")
+     const response= await addDoc(blogsCollectionRef,newData);
      console.log(response,"ress")
       alert('Blog post created successfully!');
       reset(); 
@@ -53,7 +63,7 @@ const CreateBlog = () => {
           {errors.content && <span className="text-red-500">{errors.content.message}</span>}
         </div>
 
-        <div>
+        {/* <div>
           <label htmlFor="author" className="block mb-1">Author</label>
           <input
             id="author"
@@ -62,7 +72,7 @@ const CreateBlog = () => {
             className={`w-full p-2 border border-gray-300 rounded ${errors.author ? 'border-red-500' : ''}`}
           />
           {errors.author && <span className="text-red-500">{errors.author.message}</span>}
-        </div>
+        </div> */}
 
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
           Create Blog Post

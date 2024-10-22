@@ -8,6 +8,8 @@ import Registration from './pages/Registration';
 import BlogById from './pages/BlogById';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
+import ProfilePage from './pages/ProfilePage';
+
 
 
 function App() {
@@ -15,6 +17,8 @@ function App() {
  return (
     <>
    <Navbar/>
+   
+   
    <Routes>
           <>
           <Route path='/'  element={<LandingPage/>}/>
@@ -22,6 +26,7 @@ function App() {
             <Route path='/createblog' element={<CreateBlog />} />
             <Route path='/blogs/:id' element={<BlogById />} />
             <Route path='/blogs' element={<ListingPage />} />
+            <Route path='/profile' element={<ProfilePage/>} />
           </>
           </Routes>
      
