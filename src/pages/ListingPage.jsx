@@ -2,26 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../config/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, User, ChevronRight } from 'lucide-react';
-import Navbar from '../components/Navbar';
+import { Calendar, User, ChevronRight } from 'lucide-react'
+import useBlogs from '../zustand/blogs';
+import useBlogListing from '../hooks/useBlogLisrting';
+import LoadingSpinner from '../components/loader/LoadingSpinner';
 const ListingPage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const collectionRef = collection(db, "blogs");
+  const {blogs}=useBlogs()
+   const collectionRef = collection(db, "blogs");
+   const {loading,blogListing}  =useBlogListing()
   const navigate=useNavigate();
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getDocs(collectionRef);
-        const blogsData = response.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setBlogs(blogsData); 
-      } catch (error) {
-        console.log(error, 'Error fetching blogs');
-      }
-    };
-   
-    fetchData();
+     blogListing()
   }, []);
-
+  console.log(blogs,'bloggg')
   return (
     <>   
  <div className="min-h-screen bg-gradient-to-br from-blue-100 to-blue-500 py-12 px-4 sm:px-6 lg:px-8">
@@ -63,9 +56,10 @@ const ListingPage = () => {
         </div>
       )}
     </div>
+    {loading&&<LoadingSpinner/>}
   </div>
   </>
-  );
+  );    
 };
 
 export default ListingPage;
