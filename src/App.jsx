@@ -9,6 +9,7 @@ import BlogById from './pages/BlogById';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import ProfilePage from './pages/ProfilePage';
+import Login from './pages/Login';
 
 
 
@@ -17,18 +18,22 @@ function App() {
  return (
     <>
    <Navbar/>
-   
-   
-   <Routes>
-          <>
-          <Route path='/'  element={<LandingPage/>}/>
-          <Route path='/register' element={<Registration/>} />
-            <Route path='/createblog' element={<CreateBlog />} />
-            <Route path='/blogs/:id' element={<BlogById />} />
-            <Route path='/blogs' element={<ListingPage />} />
-            <Route path='/profile' element={<ProfilePage/>} />
-          </>
-          </Routes>
+   {user? <LandingPage/>:(
+
+    <Routes>
+    <>
+    <Route path='/'  element={<LandingPage/>}/>
+    <Route path='/register' element={<Registration/>} />
+    <Route path='/login' element={<Login/>} />
+      <Route path='/createblog' element={<CreateBlog />} />
+      <Route path='/blogs/:id' element={<BlogById />} />
+      <Route path='/blogs' element={<ListingPage />} />
+      <Route path='/profile' element={<ProfilePage/>} />
+  </>
+</Routes>
+
+   )}
+
      
     
   

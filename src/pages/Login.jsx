@@ -1,13 +1,15 @@
 import React from 'react'
 import {auth,googleProvider}  from '../config/firebase'
 import {signInWithPopup,signOut}  from 'firebase/auth';
+
 import useAuthStore from '../zustand/authenticatedUser.js';
 import { useNavigate } from 'react-router-dom';
-import signup from '../auth/varifyemail/signup.js'
 import { useForm } from 'react-hook-form';
-const Registration = () => {
+import useLogin from '../hooks/useLogin.js';
+const Login = () => {
   const {register,handleSubmit,formState:{errors}}=useForm();
     const setUser = useAuthStore((state) => state.setUser);
+    const {loading,login}=useLogin()
     const navigate=useNavigate()
 
     const signInWithGoogle=async()=>{
@@ -28,10 +30,9 @@ const Registration = () => {
     }
 
 const onSubmit=async(data)=>{
-  const {email,password}=data;
-console.log(data)
-
-await signup(auth,email,password)
+    const {email,password}=data;
+   await login(auth,email,password)
+  
 }
 
 
@@ -99,4 +100,4 @@ await signup(auth,email,password)
   )
 }
 
-export default Registration
+export default Login
